@@ -23,3 +23,31 @@ addBtn.addEventListener('click', function (e) {
   document.querySelector('.author').value = '';
   syncStorage();
 });
+
+function showBooks() {
+  booksContainer.innerHTML = '';
+  bookArray.forEach((e, i) => {
+    const newBook = document.createElement('div');
+    newBook.innerHTML = `
+    <div>
+      <p>${e.title}</p>
+      <p>${e.author}</p>
+      <button type="button" class="remove-btn" myIndex ="${i}" >Remove</button>
+    </div>
+    `;
+    const newBookElement = parser.parseFromString(newBook.innerHTML, 'text/html').body.firstChild;
+    const removeBtn = newBookElement.querySelector('.remove-btn');
+    removeBtn.addEventListener('click', (e) => {
+      removeBook(e, newBookElement);
+      syncStorage();
+    });
+    booksContainer.append(newBookElement);
+    const horline = document.createElement('hr');
+    booksContainer.append(horline);
+  });
+};
+
+function syncStorage () {
+  let entireJSON = localStorage.getItem('bookKey');
+  localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
+}
