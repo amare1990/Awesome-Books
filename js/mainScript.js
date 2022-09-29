@@ -1,4 +1,4 @@
-const booksContainer = document.createElement('.container-book');
+const booksContainer = document.querySelector('.container-book');
 // const titleInput = document.querySelector('.title');
 // const authorInput = document.querySelector('.author');
 
@@ -27,10 +27,17 @@ function removeBook(e, newBookElement) {
   bookArray = bookArray.filter(checkBtnclicked);
   newBookElement.remove();
 }
-
+let entireJSON = '';
 function syncStorage() {
-  const entireJSON = localStorage.getItem('bookKey');
-  localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
+  entireJSON = localStorage.getItem('bookKey');
+  if (entireJSON != null) {
+    localStorage.setItem(
+      'bookKey',
+      entireJSON.concat(JSON.stringify(bookArray)),
+    );
+  } else {
+    entireJSON = JSON.stringify(bookArray);
+  }
 }
 
 function showBooks() {
