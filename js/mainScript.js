@@ -1,8 +1,9 @@
-const containerBook = document.createElement('.container-book');
-//const titleInput = document.querySelector('.title');
-//const authorInput = document.querySelector('.author');
+const booksContainer = document.createElement('.container-book');
+// const titleInput = document.querySelector('.title');
+// const authorInput = document.querySelector('.author');
 
 const addBtn = document.querySelector('.add-btn');
+const parser = new DOMParser();
 
 class Book {
   constructor(title, author) {
@@ -11,18 +12,26 @@ class Book {
   }
 }
 
-const bookArray = [];
+let bookArray = [];
 
-addBtn.addEventListener('click', function (e) {
-  const title = document.querySelector('.title').value;
-  const author = document.querySelector('.author').value;
-  const book = new Book(title, author);
-  bookArray.push(book);
-  showBooks();
-  document.querySelector('.title').value = '';
-  document.querySelector('.author').value = '';
-  syncStorage();
-});
+function removeBook(e, newBookElement) {
+  const index = e.target.getAttribute('myIndex');
+
+  function checkBtnclicked(element, i) {
+    if (i === parseInt(index, 10)) {
+      return false;
+    }
+    return true;
+  }
+
+  bookArray = bookArray.filter(checkBtnclicked);
+  newBookElement.remove();
+}
+
+function syncStorage() {
+  const entireJSON = localStorage.getItem('bookKey');
+  localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
+}
 
 function showBooks() {
   booksContainer.innerHTML = '';
@@ -35,7 +44,10 @@ function showBooks() {
       <button type="button" class="remove-btn" myIndex ="${i}" >Remove</button>
     </div>
     `;
-    const newBookElement = parser.parseFromString(newBook.innerHTML, 'text/html').body.firstChild;
+    const newBookElement = parser.parseFromString(
+      newBook.innerHTML,
+      'text/html',
+    ).body.firstChild;
     const removeBtn = newBookElement.querySelector('.remove-btn');
     removeBtn.addEventListener('click', (e) => {
       removeBook(e, newBookElement);
@@ -45,30 +57,21 @@ function showBooks() {
     const horline = document.createElement('hr');
     booksContainer.append(horline);
   });
-};
-
-function syncStorage () {
-  let entireJSON = localStorage.getItem('bookKey');
-  localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
 }
 
-
-function removeBook(e, newBookElement) {
-  const index = e.target.getAttribute('myIndex');
-  
-  function checkBtnclicked(element, i) {
-    if (i === parseInt(index, 10)) {
-      return false;
-    }
-    return true;
-  }
-
-  bookArray = bookArray.filter(checkBtnclicked);
-  newBookElement.remove();
-}
+addBtn.addEventListener('click', () => {
+  const title = document.querySelector('.title').value;
+  const author = document.querySelector('.author').value;
+  const book = new Book(title, author);
+  bookArray.push(book);
+  showBooks();
+  document.querySelector('.title').value = '';
+  document.querySelector('.author').value = '';
+  syncStorage();
+});
 
 window.onload = () => {
   const bookObj = localStorage.getItem('bookKey');
-  //console.log(bookObj);
-  //showBooks();  
-}
+  console.log(bookObj);
+  // showBooks();
+};
