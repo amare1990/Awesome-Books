@@ -28,9 +28,8 @@ function removeBook(e, newBookElement) {
   newBookElement.remove();
 }
 
-let entireJSON = localStorage.getItem('bookKey');
+const entireJSON = localStorage.getItem('bookKey');
 function syncStorage() {
-  //entireJSON = localStorage.getItem('bookKey');
   if (entireJSON != null) {
     localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
   } else {
