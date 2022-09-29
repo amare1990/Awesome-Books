@@ -37,6 +37,7 @@ function syncStorage() {
     );
   } else {
     entireJSON = JSON.stringify(bookArray);
+    localStorage.setItem('bookKey', entireJSON);
   }
 }
 
