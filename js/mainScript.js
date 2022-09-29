@@ -1,6 +1,4 @@
 const booksContainer = document.querySelector('.container-book');
-// const titleInput = document.querySelector('.title');
-// const authorInput = document.querySelector('.author');
 
 const addBtn = document.querySelector('.add-btn');
 const parser = new DOMParser();
@@ -33,7 +31,7 @@ function syncStorage() {
   if (entireJSON != null) {
     localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
   } else {
-    localStorage.setItem('bookKey', entireJSON);
+    localStorage.setItem('bookKey', JSON.stringify(bookArray));
   }
 }
 
@@ -77,5 +75,5 @@ addBtn.addEventListener('click', () => {
 window.onload = () => {
   const bookObj = localStorage.getItem('bookKey');
   console.log(bookObj);
-  // showBooks();
 };
+
