@@ -27,16 +27,14 @@ function removeBook(e, newBookElement) {
   bookArray = bookArray.filter(checkBtnclicked);
   newBookElement.remove();
 }
-let entireJSON = '';
+
+let entireJSON = localStorage.getItem('bookKey');
 function syncStorage() {
-  entireJSON = localStorage.getItem('bookKey');
+  //entireJSON = localStorage.getItem('bookKey');
   if (entireJSON != null) {
-    localStorage.setItem(
-      'bookKey',
-      entireJSON.concat(JSON.stringify(bookArray)),
-    );
+    localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
   } else {
-    localStorage.setItem('bookKey', JSON.stringify(bookArray));
+    localStorage.setItem('bookKey', entireJSON);
   }
 }
 
