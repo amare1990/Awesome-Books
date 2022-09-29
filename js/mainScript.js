@@ -51,3 +51,18 @@ function syncStorage () {
   let entireJSON = localStorage.getItem('bookKey');
   localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
 }
+
+
+function removeBook(e, newBookElement) {
+  const index = e.target.getAttribute('myIndex');
+  
+  function checkBtnclicked(element, i) {
+    if (i === parseInt(index, 10)) {
+      return false;
+    }
+    return true;
+  }
+
+  bookArray = bookArray.filter(checkBtnclicked);
+  newBookElement.remove();
+}
