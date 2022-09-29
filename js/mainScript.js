@@ -36,8 +36,7 @@ function syncStorage() {
       entireJSON.concat(JSON.stringify(bookArray)),
     );
   } else {
-    entireJSON = JSON.stringify(bookArray);
-    localStorage.setItem('bookKey', entireJSON);
+    localStorage.setItem('bookKey', JSON.stringify(bookArray););
   }
 }
 
