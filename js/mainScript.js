@@ -76,4 +76,3 @@ window.onload = () => {
   const bookObj = localStorage.getItem('bookKey');
   console.log(bookObj);
 };
-
