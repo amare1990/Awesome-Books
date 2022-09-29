@@ -66,3 +66,9 @@ function removeBook(e, newBookElement) {
   bookArray = bookArray.filter(checkBtnclicked);
   newBookElement.remove();
 }
+
+window.onload = () => {
+  const bookObj = localStorage.getItem('bookKey');
+  //console.log(bookObj);
+  //showBooks();  
+}
