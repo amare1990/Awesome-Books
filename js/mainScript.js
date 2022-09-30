@@ -10,7 +10,7 @@ class Book {
   }
 }
 
-let bookArray = [];
+var bookArray = [];
 
 function removeBook(e, newBookElement) {
   const index = e.target.getAttribute('myIndex');
@@ -26,10 +26,18 @@ function removeBook(e, newBookElement) {
   newBookElement.remove();
 }
 
-const entireJSON = localStorage.getItem('bookKey');
+var entireJSON = localStorage.getItem('bookKey');
 function syncStorage() {
   if (entireJSON != null) {
-    localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
+    //let x = JSON.parse(entireJSON).push(bookArray);
+    //localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
+    //localStorage.setItem('bookKey', JSON.stringify(x));
+    let entireObj = JSON.parse(entireJSON);
+    for (let i = 0; i < bookArray.length; i++) {
+      let bookObj = bookArray[i];
+      entireObj.push(bookObj);
+    }
+    localStorage.setItem('bookKey', JSON.stringify(entireObj));
   } else {
     localStorage.setItem('bookKey', JSON.stringify(bookArray));
   }
@@ -72,7 +80,40 @@ addBtn.addEventListener('click', () => {
   syncStorage();
 });
 
+let bookJSON = localStorage.getItem('bookKey');
+//let bookJSON = {};
 window.onload = () => {
-  const bookObj = localStorage.getItem('bookKey');
-  console.log(bookObj);
+  //let bookJSON = localStorage.getItem('bookKey');
+  console.log('bookkey at very beg ='+bookJSON);
+  let bookFromStorage = document.querySelector('.book-from-storage');
+
+  if (bookJSON != null) {
+    
+    let x = JSON.parse(bookJSON);
+    console.log('x = '+x);
+    for(let i = 0; i < x.length; i++) {
+      var bookObj = x[i];
+      console.log(bookObj.title);
+      
+      var temp = document.createElement('div');
+      temp.innerHTML = `
+      <div>
+      <p> ${bookObj.title} </p>
+      <p> ${bookObj.author} </p>
+      <button type="button" class="remove-btn" myIndex ="${i}" >Remove</button>
+      </div>
+      `;
+      bookFromStorage.append(temp)
+    }
+  } else {
+    //localStorage.setItem('bookKey', JSON.stringify(bookArray));
+    //bookJSON = null;
+    
+  }
+  
+  
+  //localStorage.removeItem('bookKey');
+ 
 };
+
+//localStorage.removeItem('bookKey');
