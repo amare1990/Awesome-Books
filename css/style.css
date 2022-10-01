@@ -3,3 +3,14 @@
   margin: 0;
   padding: 0;
 }
+
+body {
+  background-color: azure;
+}
+
+.wrapper {
+  width: 50%;
+  background-color: #fff;
+  margin: 50px 2px;
+  padding-left: 50px;
+}
