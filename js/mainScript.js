@@ -1,5 +1,4 @@
 const booksContainer = document.querySelector('.container-book');
-
 const addBtn = document.querySelector('.add-btn');
 const parser = new DOMParser();
 
@@ -10,7 +9,7 @@ class Book {
   }
 }
 
-var bookArray = [];
+let bookArray = [];
 
 function removeBook(e, newBookElement) {
   const index = e.target.getAttribute('myIndex');
@@ -26,15 +25,12 @@ function removeBook(e, newBookElement) {
   newBookElement.remove();
 }
 
-var entireJSON = localStorage.getItem('bookKey');
+const entireJSON = localStorage.getItem('bookKey');
 function syncStorage() {
   if (entireJSON != null) {
-    //let x = JSON.parse(entireJSON).push(bookArray);
-    //localStorage.setItem('bookKey', entireJSON.concat(JSON.stringify(bookArray)));
-    //localStorage.setItem('bookKey', JSON.stringify(x));
-    let entireObj = JSON.parse(entireJSON);
-    for (let i = 0; i < bookArray.length; i++) {
-      let bookObj = bookArray[i];
+    const entireObj = JSON.parse(entireJSON);
+    for (let i = 0; i < bookArray.length; i += 1) {
+      const bookObj = bookArray[i];
       entireObj.push(bookObj);
     }
     localStorage.setItem('bookKey', JSON.stringify(entireObj));
@@ -80,3 +76,4 @@ addBtn.addEventListener('click', () => {
   syncStorage();
 });
 
+localStorage.removeItem('BookKey');
