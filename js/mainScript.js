@@ -1,7 +1,7 @@
 window.onload = () => {
   const parser = new DOMParser();
   const booksContainer = document.querySelector('.container-book');
-  const addBtn = document.querySelector('.add-btn');  
+  const addBtn = document.querySelector('.add-btn');
 
   class Book {
     constructor(title, author) {
@@ -11,6 +11,30 @@ window.onload = () => {
   }
 
   let bookArray = [];
+
+  function showBooks() {
+    booksContainer.innerHTML = '';
+    bookArray.forEach((e, i) => {
+      const newBook = `
+      <div>
+        <p>${e.title}</p>
+        <p>${e.author}</p>
+        <button type="button" class="remove-btn" myIndex ="${i}" >Remove</button>
+      </div>
+      `;
+      const newBookElement = parser.parseFromString(
+        newBook,
+        'text/html',
+      ).body.firstChild;
+      const removeBtn = newBookElement.querySelector('.remove-btn');
+      removeBtn.addEventListener('click', (e) => {
+        removeBook(e, newBookElement);
+      });
+      booksContainer.append(newBookElement);
+      const horline = document.createElement('hr');
+      booksContainer.append(horline);
+    });
+  }
 
   function removeBook(e, newBookElement) {
     const index = e.target.getAttribute('myIndex');
@@ -28,38 +52,6 @@ window.onload = () => {
     showBooks();
   }
 
-  const entireJSON = localStorage.getItem('bookKey');
-
-  if (entireJSON) {
-    bookArray = JSON.parse(entireJSON);
-    showBooks();
-  }
-
-  function showBooks() {
-    booksContainer.innerHTML = '';
-    bookArray.forEach((e, i) => {
-      const newBook = `
-      <div>
-        <p>${e.title}</p>
-        <p>${e.author}</p>
-        <button type="button" class="remove-btn" myIndex ="${i}" >Remove</button>
-      </div>
-      `;
-      const newBookElement = parser.parseFromString(
-        newBook,
-        'text/html',
-      ).body.firstChild;
-      console.log(newBookElement);
-      const removeBtn = newBookElement.querySelector('.remove-btn');
-      removeBtn.addEventListener('click', (e) => {
-        removeBook(e, newBookElement);
-      });
-      booksContainer.append(newBookElement);
-      const horline = document.createElement('hr');
-      booksContainer.append(horline);
-    });
-  }
-
   addBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const title = document.querySelector('.title').value;
@@ -71,4 +63,11 @@ window.onload = () => {
     document.querySelector('.title').value = '';
     document.querySelector('.author').value = '';
   });
+
+  const entireJSON = localStorage.getItem('bookKey');
+
+  if (entireJSON) {
+    bookArray = JSON.parse(entireJSON);
+    showBooks();
+  }
 };
