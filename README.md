@@ -18,7 +18,7 @@
 
 ## Authors
 
-👤 Ezema Anthony Sunday
+👤 Ezema Anthony S
 
 - GitHub: [@githubhandle](https://github.com/sonyco-4u/)
 
