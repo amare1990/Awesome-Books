@@ -1,7 +1,7 @@
 window.onload = () => {
-  const booksContainer = document.querySelector('.container-book');
-  const addBtn = document.querySelector('.add-btn');
   const parser = new DOMParser();
+  const booksContainer = document.querySelector('.container-book');
+  const addBtn = document.querySelector('.add-btn');  
 
   class Book {
     constructor(title, author) {
@@ -24,27 +24,21 @@ window.onload = () => {
 
     bookArray = bookArray.filter(checkBtnclicked);
     newBookElement.remove();
+    localStorage.setItem('bookKey', JSON.stringify(bookArray));
+    showBooks();
   }
 
   const entireJSON = localStorage.getItem('bookKey');
-  function syncStorage() {
-    if (entireJSON != null) {
-      const entireObj = JSON.parse(entireJSON);
-      for (let i = 0; i < bookArray.length; i += 1) {
-        const bookObj = bookArray[i];
-        entireObj.push(bookObj);
-      }
-      localStorage.setItem('bookKey', JSON.stringify(entireObj));
-    } else {
-      localStorage.setItem('bookKey', JSON.stringify(bookArray));
-    }
+
+  if (entireJSON) {
+    bookArray = JSON.parse(entireJSON);
+    showBooks();
   }
 
   function showBooks() {
     booksContainer.innerHTML = '';
     bookArray.forEach((e, i) => {
-      const newBook = document.createElement('div');
-      newBook.innerHTML = `
+      const newBook = `
       <div>
         <p>${e.title}</p>
         <p>${e.author}</p>
@@ -52,13 +46,13 @@ window.onload = () => {
       </div>
       `;
       const newBookElement = parser.parseFromString(
-        newBook.innerHTML,
+        newBook,
         'text/html',
       ).body.firstChild;
+      console.log(newBookElement);
       const removeBtn = newBookElement.querySelector('.remove-btn');
       removeBtn.addEventListener('click', (e) => {
         removeBook(e, newBookElement);
-        syncStorage();
       });
       booksContainer.append(newBookElement);
       const horline = document.createElement('hr');
@@ -66,15 +60,15 @@ window.onload = () => {
     });
   }
 
-  addBtn.addEventListener('click', () => {
+  addBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     const title = document.querySelector('.title').value;
     const author = document.querySelector('.author').value;
     const book = new Book(title, author);
     bookArray.push(book);
     showBooks();
+    localStorage.setItem('bookKey', JSON.stringify(bookArray));
     document.querySelector('.title').value = '';
     document.querySelector('.author').value = '';
-    syncStorage();
   });
-
 };
